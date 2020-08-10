@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <script src="p5.js"></script>
+    <script src="p5.sound.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f3696ade89.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">challengeable</h1>
+            <p class="lead">チャレンジャブルは音声認識区分によって会話を録音し、ユーザの「噛み」をその場で検証するためのツールです。Challengeable is a tool for recording
+                conversations by speech recognition segmentation and enables users to verify the user's "KAMI" on the
+                spot.
+            </p>
+            <hr class="my-4">
+            <h3>使い方 / How to use</h3>
+
+            <p>マイクに向かって話した内容がそのままテキストとして表示されます。認識された文章をクリックすることでその部分の録音を再生できます。
+                What you say to a microphone is displayed as text. By clicking on the recognized text, you can play
+                back the recording.</p>
+
+        </div>
+
+
+
+        <div id="text-holder"></div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <button type="button" id="toggle_start_pause" class="btn btn-primary" data-toggle="button"
+                    value="false">
+                    <i class="far fa-comment-alt"></i> Start
+                </button>
+            </div>
+
+            <input type="text" class="form-control" placeholder="Press Start button then speak something"
+                aria-describedby="basic-addon2" id="text">
+            <div class="input-group-append">
+                <span class="input-group-text" id="label">quiet</span>
+            </div>
+        </div>
+
+
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                Threshold
+            </div>
+            <div class="col-sm-10">
+                <input type="range" class="form-control-range" id="formControlRange" value="0.005" min="0.0001"
+                    max="0.500" step="0.0001" style="height:25px">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <i class="fas fa-microphone"></i>
+            </div>
+            <div class="col-sm-10">
+                <div class="progress" style="height:15px">
+                    <div id="volume" class="progress-bar progress-bar-striped bg-danger" role="progressbar"
+                        style="width:10%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sketch-holder"></div>
+
+
+        <script src="p5.speech.js"></script>
+
+        <script src="sketch.js"></script>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="ContinuousSpeechRecognition.js"></script>
+    </div>
+</body>
+
+</html>
