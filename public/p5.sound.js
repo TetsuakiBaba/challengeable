@@ -534,8 +534,8 @@
         }
       })(window);
 
-
-      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+      //here
+      MediaDevices.getUserMedia = MediaDevices.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
       /**
        * Determine which filetypes are supported (inspired by buzz.js)
        * The audio element (el) will only be used to test browser support for various audio formats

@@ -5,6 +5,8 @@ https://script.google.com/d/14bneey4l1045Kf9tXrfIbD81jwk3Xdh4W44LoYGt65a5oVHb37C
 languageApp detail info, you can check all list of language codes.
 https://developers.google.com/apps-script/reference/language/language-app
 */
+var vtlog = [];
+var myRec = new p5.SpeechRec('', parseResult); // new P5.SpeechRec object
 
 class VoiceTextLog {
     constructor() {
@@ -81,12 +83,11 @@ class VoiceTextLog {
     }
 }
 
-var vtlog = [];
-var myRec = new p5.SpeechRec('', parseResult); // new P5.SpeechRec object
+
 
 var socket;
 
-var mic, recorder, soundFile;
+var mic, recorder;
 var state = 0;
 var flg_rec_started = false;
 
@@ -119,13 +120,10 @@ function setup() {
     attachAudioDevicesToSelect("#audio_devices");
 
     mic.start();
-    mic.setSource(0);
     // create a sound recorder
     recorder = new p5.SoundRecorder();
     // connect the mic to the recorder
     recorder.setInput(mic);
-    // create an empty sound file that we will use to playback the recording
-    soundFile = new p5.SoundFile();
 
     select("#toggle_start_pause").mouseClicked(toggleStartPause);
 }
@@ -139,6 +137,9 @@ function pauseRecognition() {
 }
 
 function startRecognition() {
+    for (let i = 0; i < vtlog.length; i++) {
+        vtlog[i].sound.stop();
+    }
     document.getElementById("toggle_start_pause").innerHTML = "<i class=\"far fa-pause-circle\"></i> Pause";
     document.getElementById("toggle_start_pause").className = "btn btn-danger";
     document.getElementById("text").placeholder = "Speak something, or Press Pause button to stop recognition.";
@@ -161,46 +162,11 @@ function toggleStartPause() {
 
 
 
-var is_recording = false;
-var is_first_playing = false;
-var is_playing = 0;
-var flg_rec_cancel = false;
-function draw() {
-
-    background(150);
-    circle(width / 2, height / 2, mic.getLevel() * 1000);
-    text(mic.getLevel(), 10, 10)
-    text(is_recording, 10, 20);
-    text(vtlog.length, 10, 30);
-
-    select("#volume").style("width", str(1000 * mic.getLevel()) + "%");
-
-    is_playing = 0;
-    for (let i = 0; i < vtlog.length; i++) {
-        if (vtlog[i].sound.isPlaying()) {
-            is_playing++;
-        }
-    }
-    text("is_playing:" + str(is_playing), 10, 40);
-
-    if (is_recording == false && getAudioContext().state == 'running') {
-        vtlog.push(new VoiceTextLog());
-        userStartAudio();
-        recorder.record(vtlog[vtlog.length - 1].sound, 15,
-            finalizeRecording);
-        is_recording = true;
-        //myRec.start();
-    }
-}
-
 function finalizeRecording() {
     console.log("successed recording");
 }
 var flg_first_parseResult = true;
 function parseResult() {
-    if (is_playing > 0) {
-        return;
-    }
     if (flg_first_parseResult == true) {
 
         if (vtlog.length > 0) {
@@ -216,9 +182,14 @@ function parseResult() {
 
 function startSpeech() {
     console.log("start");
-    if (is_playing == true) {
-        flg_rec_cancel = true;
+    if (flg_rec_started == false) {
+        return;
     }
+    userStartAudio();
+    vtlog.push(new VoiceTextLog());
+    recorder.record(vtlog[vtlog.length - 1].sound, 15,
+        finalizeRecording);
+
 }
 function endSpeech() {
     console.log("End");
@@ -226,20 +197,19 @@ function endSpeech() {
     flg_first_parseResult = true;
     // 結果がなかった場合
     if (!myRec.resultValue) {
-        if (is_recording) {
-            is_recording = false;
-            //userStartAudio();
-            recorder.stop();
-            vtlog.pop();
-        }
+        //userStartAudio();
+        recorder.stop();
+        vtlog.pop();
+        console.log("vtlog poped");
         if (flg_rec_started) myRec.start();
         return;
     }
     // 音声入力結果があった場合
     let str_result = document.getElementById("text").value;
-    if (str_result.length > 0 && is_playing == 0) {
+    if (str_result.length > 0) {
         console.log("End");
         document.getElementById("label").innerHTML = "quiet";
+
         userStartAudio();
         recorder.stop();
         if (!vtlog[vtlog.length - 1].sound) {
@@ -279,14 +249,13 @@ function endSpeech() {
             });
     }
     else {
-        if (is_recording) {
-            is_recording = false;
-            userStartAudio();
-            recorder.stop();
-            vtlog.pop();
-        }
+        console.log("using");
+        userStartAudio();
+        recorder.stop();
+        vtlog.pop();
+
     }
     if (flg_rec_started) myRec.start();
-    is_recording = false;
+
 }
 
