@@ -1,11 +1,20 @@
-<html>
+<html lang="ja">
 
 <head>
-
+    <meta http-equiv="content-type" charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/f3696ade89.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
@@ -28,7 +37,7 @@
             <hr class="my-4">
             <h3>使い方 / How to use</h3>
 
-            <p>マイクに向かって話した内容がそのままテキストとして表示されます。認識された文章をクリックすることでその部分の録音を再生できます。
+            <p>スタートボタンを押すと、マイクに向かって話した内容がそのままテキストとして表示されます。認識された文章をクリックすることでその部分の録音を再生できます。
                 What you say to a microphone is displayed as text. By clicking on the recognized text, you can play
                 back the recording.</p>
 
@@ -64,11 +73,14 @@
                 <option value="100">100</option>
             </select>
             <div class="input-group-append">
-                <span class="input-group-text" id="audio_device_label">Audio Device</span>
+                <span class="input-group-text" id="audio_device_label" data-toggle="tooltip" data-placement="top"
+                    title="システムデフォルトのマイクが利用されるので、変更する場合はOS側からデフォルトマイクを変更した後にページをリロードしてください。">Audio Device</span>
             </div>
             <select class="custom-select" id="audio_devices">
             </select>
         </div>
+
+
 
 
 
@@ -90,15 +102,24 @@
 
         <div id="sketch-holder"></div>
 -->
-
-        <script src="p5.js"></script>
-        <script src="p5.sound.js"></script>
-        <script src="VideoAudioDeviceSelect.js"></script>
-        <script src="p5.speech.js"></script>
-        <script src="sketch.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="ContinuousSpeechRecognition.js"></script>
+        <hr class="my-4">
+        <footer class="page-footer font-small">
+            <div class="footer-copyright text-center py-3">
+                <a href="https://github.com/TetsuakiBaba/challengeable">Challengeable on github</a> by
+                <a href="https://tetsuakibaba.jp">Tetsuaki Baba</a>
+            </div>
+        </footer>
     </div>
+    <script src="p5.js"></script>
+    <script src="p5.sound.js"></script>
+    <script src="VideoAudioDeviceSelect.js"></script>
+    <script src="p5.speech.js"></script>
+    <script src="sketch.js"></script>
+    <!--<script src="/socket.io/socket.io.js"></script>-->
+    <script src="ContinuousSpeechRecognition.js"></script>
+
+
+
 </body>
 
 </html>

@@ -8,6 +8,10 @@ https://developers.google.com/apps-script/reference/language/language-app
 var vtlog = [];
 var myRec = new p5.SpeechRec('', parseResult); // new P5.SpeechRec object
 
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
 class VoiceTextLog {
     constructor() {
         this.sound = new p5.SoundFile();
@@ -85,7 +89,7 @@ class VoiceTextLog {
 
 
 
-var socket;
+//var socket;
 
 var mic, recorder;
 var state = 0;
@@ -104,7 +108,7 @@ function setup() {
     //var canvas = createCanvas(400, 400);
     //canvas.parent("sketch-holder");
 
-    socket = io.connect(window.location.origin);
+    //socket = io.connect(window.location.origin);
 
     myRec.onEnd = endSpeech;
     myRec.onStart = startSpeech;
