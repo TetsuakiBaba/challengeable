@@ -11,6 +11,7 @@ class VoiceTextLog {
         this.sound = new p5.SoundFile();
         this.text = "";
         this.timestamp_start_recording = millis();
+        this.date_and_timestamp = year() + nf(month(), 2) + nf(day(), 2) + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     }
     setText(_text) {
         this.text = _text;
@@ -19,12 +20,33 @@ class VoiceTextLog {
 
     }
     createP(_text) {
+        this.text = _text;
         this.element = createDiv(_text);
-        this.element.mouseClicked(this.play.bind(this));
+
+        this.element_button_play = createSpan(' <i class="far fa-play-circle fa-lg"></i> ');
+        this.element_button_play.parent(this.element);
+        this.element_button_play.class("pointer");
+        this.element_button_play.mouseClicked(this.play.bind(this));
+        this.element_button_download = createSpan(' <i class="far fa-arrow-alt-circle-down fa-lg"></i> ');
+        this.element_button_download.parent(this.element);
+        this.element_button_download.class("pointer");
+        this.element_button_download.mouseClicked(this.download.bind(this));
+
+
+        //this.element.mouseClicked(this.play.bind(this));
+        //this.element.mouseOver(this.showButtons.bind(this));
+
+        this.element.class("vtlog");
+        //this.element_button.class("vtlog");
         this.element.parent('text-holder');
-        this.element.class('vtlog');
+        //this.element_button_play.hide();
+        //this.element_button_download.hide();
+        //this.element.mouseOver(this.showButtons.bind(this));
+        //this.element.mouseOut(this.hideButtons.bind(this));
     }
     removeP() {
+        this.element_button_play.remove();
+        this.element_button_download.remove();
         this.element.remove();
     }
     setFirstParsingTime() {
@@ -34,7 +56,10 @@ class VoiceTextLog {
         let jumptime = (this.timestamp_start_parsing_time - this.timestamp_start_recording) / 1000;
         pauseRecognition();
         this.sound.play();
-        console.log(jumptime, this.timestamp_start_parsing_time / 1000, this.timestamp_start_recording / 1000);
+        console.log(
+            "jumptime:" + str(jumptime),
+            "timestamp_start_parsing_time:" + str(this.timestamp_start_parsing_time / 1000),
+            "timestamp_start_recording:" + str(this.timestamp_start_recording / 1000));
         console.log("duration:", this.sound.duration());
         if (jumptime >= 1.0) {
             this.sound.jump(jumptime - 1.0)
@@ -42,6 +67,17 @@ class VoiceTextLog {
         else {
             //this.sound.jump(jumptime);
         }
+    }
+    download() {
+        this.sound.save(this.text + ".wav");
+    }
+    showButtons() {
+        this.element_button_play.show();
+        this.element_button_download.show();
+    }
+    hideButtons() {
+        this.element_button_play.hide();
+        this.element_button_download.hide();
     }
 }
 
@@ -54,16 +90,10 @@ var mic, recorder, soundFile;
 var state = 0;
 var flg_rec_started = false;
 
-function preload() {
 
-    if (getAudioContext().state !== 'running') {
-        getAudioContext().resume();
-    }
-}
 function setup() {
     var userAgent = window.navigator.userAgent.toLowerCase();
     if (userAgent.indexOf('chrome') != -1) {
-
     }
     else {
         window.confirm("ブラウザをChromeで開き直してください。このページはChromeのみで動作します。This page works only on Chrome browser.");
@@ -72,19 +102,8 @@ function setup() {
     noCanvas();
     //var canvas = createCanvas(400, 400);
     //canvas.parent("sketch-holder");
+
     socket = io.connect(window.location.origin);
-
-
-    // create an audio in
-    mic = new p5.AudioIn();
-    mic.start();
-    // create a sound recorder
-    recorder = new p5.SoundRecorder();
-    // connect the mic to the recorder
-    recorder.setInput(mic);
-    // create an empty sound file that we will use to playback the recording
-    soundFile = new p5.SoundFile();
-
 
     myRec.onEnd = endSpeech;
     myRec.onStart = startSpeech;
@@ -92,9 +111,23 @@ function setup() {
     myRec.interimResults = true; // allow partial recognition (faster, less accurate)
     //myRec.onResult = parseResult; // now in the constructor
 
+    if (getAudioContext().state !== 'running') {
+        getAudioContext().resume();
+    }
+    // create an audio in
+    mic = new p5.AudioIn();
+    attachAudioDevicesToSelect("#audio_devices");
+
+    mic.start();
+    mic.setSource(0);
+    // create a sound recorder
+    recorder = new p5.SoundRecorder();
+    // connect the mic to the recorder
+    recorder.setInput(mic);
+    // create an empty sound file that we will use to playback the recording
+    soundFile = new p5.SoundFile();
 
     select("#toggle_start_pause").mouseClicked(toggleStartPause);
-
 }
 
 function pauseRecognition() {
@@ -133,11 +166,13 @@ var is_first_playing = false;
 var is_playing = 0;
 var flg_rec_cancel = false;
 function draw() {
+
     background(150);
     circle(width / 2, height / 2, mic.getLevel() * 1000);
     text(mic.getLevel(), 10, 10)
     text(is_recording, 10, 20);
     text(vtlog.length, 10, 30);
+
     select("#volume").style("width", str(1000 * mic.getLevel()) + "%");
 
     is_playing = 0;
@@ -148,15 +183,19 @@ function draw() {
     }
     text("is_playing:" + str(is_playing), 10, 40);
 
-    if (is_recording == false && mic.getLevel() > 0.01 && is_playing == 0) {
+    if (is_recording == false && getAudioContext().state == 'running') {
         vtlog.push(new VoiceTextLog());
         userStartAudio();
-        recorder.record(vtlog[vtlog.length - 1].sound);
+        recorder.record(vtlog[vtlog.length - 1].sound, 15,
+            finalizeRecording);
         is_recording = true;
         //myRec.start();
     }
 }
 
+function finalizeRecording() {
+    console.log("successed recording");
+}
 var flg_first_parseResult = true;
 function parseResult() {
     if (is_playing > 0) {
@@ -183,6 +222,7 @@ function startSpeech() {
 }
 function endSpeech() {
     console.log("End");
+    myRec.stop();
     flg_first_parseResult = true;
     // 結果がなかった場合
     if (!myRec.resultValue) {
@@ -192,9 +232,7 @@ function endSpeech() {
             recorder.stop();
             vtlog.pop();
         }
-        if (flg_rec_started == true) {
-            myRec.start(); // start engine
-        }
+        if (flg_rec_started) myRec.start();
         return;
     }
     // 音声入力結果があった場合
@@ -202,8 +240,11 @@ function endSpeech() {
     if (str_result.length > 0 && is_playing == 0) {
         console.log("End");
         document.getElementById("label").innerHTML = "quiet";
-        //userStartAudio();
+        userStartAudio();
         recorder.stop();
+        if (!vtlog[vtlog.length - 1].sound) {
+            console.log("Error");
+        }
         let = count = 0;
         //while (!vtlog[vtlog.length - 1].sound.isLoaded()) {}
 
@@ -211,7 +252,7 @@ function endSpeech() {
         if (vtlog.length > 0) {
             vtlog[vtlog.length - 1].createP(myRec.resultString);
             vtlog[vtlog.length - 1].setText(myRec.resultString);
-            while (vtlog.length > 10) {
+            while (vtlog.length > document.getElementById("history_size").value) {
                 vtlog[0].removeP();
                 vtlog.shift();
             }
@@ -226,6 +267,16 @@ function endSpeech() {
         */
         document.getElementById("text").value = "";
         myRec.resultString = '';
+
+        var element = document.documentElement;
+        var bottom = element.scrollHeight - element.clientHeight;
+        console.log(bottom, element.scrollHeight);
+        window.scroll(
+            {
+                left: 0,
+                top: element.scrollHeight,
+                behavior: "smooth"
+            });
     }
     else {
         if (is_recording) {
@@ -235,9 +286,7 @@ function endSpeech() {
             vtlog.pop();
         }
     }
-    if (flg_rec_started == true) {
-        myRec.start(); // start engine
-    }
+    if (flg_rec_started) myRec.start();
     is_recording = false;
 }
 
