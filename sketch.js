@@ -62,11 +62,11 @@ class VoiceTextLog {
         let jumptime = (this.timestamp_start_parsing_time - this.timestamp_start_recording) / 1000;
         pauseRecognition();
         this.sound.play();
-        console.log(
-            "jumptime:" + str(jumptime),
-            "timestamp_start_parsing_time:" + str(this.timestamp_start_parsing_time / 1000),
-            "timestamp_start_recording:" + str(this.timestamp_start_recording / 1000));
-        console.log("duration:", this.sound.duration());
+        // console.log(
+        //     "jumptime:" + str(jumptime),
+        //     "timestamp_start_parsing_time:" + str(this.timestamp_start_parsing_time / 1000),
+        //     "timestamp_start_recording:" + str(this.timestamp_start_recording / 1000));
+        // console.log("duration:", this.sound.duration());
         if (jumptime >= 1.0) {
             this.sound.jump(jumptime - 1.0)
         }
@@ -167,7 +167,7 @@ function toggleStartPause() {
 
 
 function finalizeRecording() {
-    console.log("successed recording");
+    //console.log("successed recording");
 }
 var flg_first_parseResult = true;
 function parseResult() {
@@ -185,7 +185,7 @@ function parseResult() {
 
 
 function startSpeech() {
-    console.log("start");
+    //console.log("start");
     if (flg_rec_started == false) {
         return;
     }
@@ -196,7 +196,7 @@ function startSpeech() {
 
 }
 function endSpeech() {
-    console.log("End");
+    //console.log("End");
     myRec.stop();
     flg_first_parseResult = true;
     // 結果がなかった場合
@@ -204,25 +204,25 @@ function endSpeech() {
         //userStartAudio();
         recorder.stop();
         vtlog.pop();
-        console.log("vtlog poped");
+        //console.log("vtlog poped");
         if (flg_rec_started) myRec.start();
         return;
     }
     // 音声入力結果があった場合
     let str_result = document.getElementById("text").value;
     if (str_result.length > 0) {
-        console.log("End");
+        //console.log("End");
         document.getElementById("label").innerHTML = "quiet";
 
         userStartAudio();
         recorder.stop();
         if (!vtlog[vtlog.length - 1].sound) {
-            console.log("Error");
+            //console.log("Error");
         }
         let = count = 0;
         //while (!vtlog[vtlog.length - 1].sound.isLoaded()) {}
 
-        console.log("isLoaded():", vtlog[vtlog.length - 1].sound.isLoaded());
+        //console.log("isLoaded():", vtlog[vtlog.length - 1].sound.isLoaded());
         if (vtlog.length > 0) {
             vtlog[vtlog.length - 1].createP(myRec.resultString);
             vtlog[vtlog.length - 1].setText(myRec.resultString);
@@ -244,7 +244,7 @@ function endSpeech() {
 
         var element = document.documentElement;
         var bottom = element.scrollHeight - element.clientHeight;
-        console.log(bottom, element.scrollHeight);
+        //console.log(bottom, element.scrollHeight);
         window.scroll(
             {
                 left: 0,
@@ -253,7 +253,7 @@ function endSpeech() {
             });
     }
     else {
-        console.log("using");
+        //console.log("using");
         userStartAudio();
         recorder.stop();
         vtlog.pop();
