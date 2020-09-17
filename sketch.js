@@ -54,6 +54,9 @@ class VoiceTextLog {
         this.element_button_play.remove();
         this.element_button_download.remove();
         this.element.remove();
+        this.element_button_play = void 0;
+        this.element_button_download = void 0;
+        this.element = void 0;
     }
     setFirstParsingTime() {
         this.timestamp_start_parsing_time = millis();
@@ -191,8 +194,7 @@ function startSpeech() {
     }
     userStartAudio();
     vtlog.push(new VoiceTextLog());
-    recorder.record(vtlog[vtlog.length - 1].sound, 15,
-        finalizeRecording);
+    recorder.record(vtlog[vtlog.length - 1].sound, 15, finalizeRecording);
 
 }
 function endSpeech() {
@@ -204,7 +206,7 @@ function endSpeech() {
         //userStartAudio();
         recorder.stop();
         vtlog.pop();
-        //console.log("vtlog poped");
+        console.log("vtlog poped");
         if (flg_rec_started) myRec.start();
         return;
     }
@@ -214,8 +216,9 @@ function endSpeech() {
         //console.log("End");
         document.getElementById("label").innerHTML = "quiet";
 
-        userStartAudio();
+
         recorder.stop();
+
         if (!vtlog[vtlog.length - 1].sound) {
             //console.log("Error");
         }
@@ -228,9 +231,17 @@ function endSpeech() {
             vtlog[vtlog.length - 1].setText(myRec.resultString);
             while (vtlog.length > document.getElementById("history_size").value) {
                 vtlog[0].removeP();
+                vtlog[0].sound = void 0;
+                vtlog[0] = void 0;
                 vtlog.shift();
+                console.log("vtlog shifted");
             }
         }
+
+        //recorder = void 0;
+        //recorder = new p5.SoundRecorder();
+        //recorder.setInput(mic);
+        userStartAudio();
         /*
         var data = {
             text: encodeURI(myRec.resultString),
