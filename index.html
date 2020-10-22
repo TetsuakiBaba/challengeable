@@ -2,19 +2,12 @@
 
 <head>
     <meta http-equiv="content-type" charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/f3696ade89.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="shortcut icon" href="./images/favicon.ico">
 
@@ -26,23 +19,8 @@
 
     <div class="container">
 
+        <h1 class="display-4">challengeable</h1>
 
-
-        <div class="jumbotron">
-            <h1 class="display-4">challengeable</h1>
-            <p class="lead">チャレンジャブルは音声認識区分によって会話を録音し、ユーザの「噛み」をその場で検証するためのツールです。Challengeable is a tool for
-                recording
-                conversations by speech recognition segmentation and enables users to verify the user's "KAMI" on the
-                spot.
-            </p>
-            <hr class="my-4">
-            <h3>使い方 / How to use</h3>
-
-            <p>スタートボタンを押すと、マイクに向かって話した内容がそのままテキストとして表示されます。認識された文章をクリックすることでその部分の録音を再生できます。
-                What you say to a microphone is displayed as text. By clicking on the recognized text, you can play
-                back the recording.</p>
-
-        </div>
 
 
         <div id="text-holder"></div>
@@ -50,8 +28,7 @@
 
         <div class="input-group mb-1">
             <div class="input-group-append">
-                <button type="button" id="toggle_start_pause" class="btn btn-primary" data-toggle="button"
-                    value="false">
+                <button type="button" id="toggle_start_pause" class="btn btn-primary" data-toggle="button" value="false">
                     <i class="far fa-comment-alt"></i> Start
                 </button>
             </div>
@@ -59,8 +36,9 @@
                 <span class="input-group-text" id="label">quiet</span>
             </div>
 
-            <input type="text" class="form-control" placeholder="Press Start button then speak something"
-                aria-describedby="basic-addon2" id="text">
+            <input type="text" class="form-control" placeholder="Press Start button then speak something" aria-describedby="basic-addon2" id="text" />
+
+
 
         </div>
 
@@ -74,8 +52,30 @@
                 <option value="100">100</option>
             </select>
             <div class="input-group-append">
-                <span class="input-group-text" id="audio_device_label" data-toggle="tooltip" data-placement="top"
-                    title="システムデフォルトのマイクが利用されるので、変更する場合はOS側からデフォルトマイクを変更した後にページをリロードしてください。">Audio Device</span>
+                <span class="input-group-text" id="Language">Language</span>
+            </div>
+            <select class="custom-select" id="select_language">
+                <option value='ja' selected>ja</option>
+                <option value='zh-CN'>zh-CN</option>
+                <option value='zh-TW'>zh-TW</option>
+                <option value='ko'>ko</option>
+                <option value='id'>id</option>
+                <option value='th'>th</option>
+                <option value='ms'>ms</option>
+                <option value='mn'>mn</option>
+                <option value='en'>en</option>
+                <option value='fr'>fr</option>
+                <option value='de'>de</option>
+                <option value='it'>it</option>
+                <option value='pl'>pl</option>
+                <option value='pt'>pt</option>
+                <option value='es'>es</option>
+                <option value='ru'>ru</option>
+                <option value='vi'>vi</option>
+
+            </select>
+            <div class="input-group-append">
+                <span class="input-group-text" id="audio_device_label" data-toggle="tooltip" data-placement="top" title="Only works on system default audio device">Audio Device</span>
             </div>
             <select class="custom-select" id="audio_devices">
             </select>

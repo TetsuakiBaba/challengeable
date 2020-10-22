@@ -8,7 +8,7 @@ https://developers.google.com/apps-script/reference/language/language-app
 var vtlog = [];
 var myRec = new p5.SpeechRec('', parseResult); // new P5.SpeechRec object
 
-$(function () {
+$(function() {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
@@ -72,8 +72,7 @@ class VoiceTextLog {
         // console.log("duration:", this.sound.duration());
         if (jumptime >= 1.0) {
             this.sound.jump(jumptime - 1.0)
-        }
-        else {
+        } else {
             //this.sound.jump(jumptime);
         }
     }
@@ -101,9 +100,7 @@ var flg_rec_started = false;
 
 function setup() {
     var userAgent = window.navigator.userAgent.toLowerCase();
-    if (userAgent.indexOf('chrome') != -1) {
-    }
-    else {
+    if (userAgent.indexOf('chrome') != -1) {} else {
         window.confirm("ブラウザをChromeで開き直してください。このページはChromeのみで動作します。This page works only on Chrome browser.");
     }
     // graphics stuff:
@@ -117,6 +114,7 @@ function setup() {
     myRec.onStart = startSpeech;
     myRec.continuous = false; // no continuous recognition
     myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+
     //myRec.onResult = parseResult; // now in the constructor
 
     if (getAudioContext().state !== 'running') {
@@ -133,6 +131,13 @@ function setup() {
     recorder.setInput(mic);
 
     select("#toggle_start_pause").mouseClicked(toggleStartPause);
+    select('#select_language').changed(changedLanguage);
+}
+
+function changedLanguage() {
+    console.log(this.value());
+    myRec.rec.abort();
+    myRec.rec.lang = this.value();
 }
 
 function pauseRecognition() {
@@ -151,9 +156,13 @@ function startRecognition() {
     document.getElementById("toggle_start_pause").className = "btn btn-danger";
     document.getElementById("text").placeholder = "Speak something, or Press Pause button to stop recognition.";
     flg_rec_started = true;
+
+
     myRec.start(); // start engine
 
+
 }
+
 function toggleStartPause() {
     if (getAudioContext().state !== 'running') {
         getAudioContext().resume();
@@ -161,8 +170,7 @@ function toggleStartPause() {
 
     if (flg_rec_started == false) { // start recognition
         startRecognition();
-    }
-    else if (flg_rec_started == true) { //pause recognition
+    } else if (flg_rec_started == true) { //pause recognition
         pauseRecognition();
     }
 }
@@ -173,6 +181,7 @@ function finalizeRecording() {
     //console.log("successed recording");
 }
 var flg_first_parseResult = true;
+
 function parseResult() {
     if (flg_first_parseResult == true) {
 
@@ -197,6 +206,7 @@ function startSpeech() {
     recorder.record(vtlog[vtlog.length - 1].sound, 15, finalizeRecording);
 
 }
+
 function endSpeech() {
     //console.log("End");
     myRec.stop();
@@ -256,14 +266,12 @@ function endSpeech() {
         var element = document.documentElement;
         var bottom = element.scrollHeight - element.clientHeight;
         //console.log(bottom, element.scrollHeight);
-        window.scroll(
-            {
-                left: 0,
-                top: element.scrollHeight,
-                behavior: "smooth"
-            });
-    }
-    else {
+        window.scroll({
+            left: 0,
+            top: element.scrollHeight,
+            behavior: "smooth"
+        });
+    } else {
         //console.log("using");
         userStartAudio();
         recorder.stop();
@@ -273,4 +281,3 @@ function endSpeech() {
     if (flg_rec_started) myRec.start();
 
 }
-
