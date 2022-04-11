@@ -7,8 +7,8 @@ https://developers.google.com/apps-script/reference/language/language-app
 */
 var vtlog = [];
 var myRec = new p5.SpeechRec('', parseResult); // new P5.SpeechRec object
-
-$(function() {
+var se;
+$(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
@@ -64,17 +64,27 @@ class VoiceTextLog {
     play() {
         let jumptime = (this.timestamp_start_parsing_time - this.timestamp_start_recording) / 1000;
         pauseRecognition();
-        this.sound.play();
+
+        se.play();
+        var self = this.sound;
+        se.onended(function () {
+            self.play();
+            if (jumptime >= 1.0) {
+                self.jump(jumptime - 1.0)
+            } else {
+                //this.sound.jump(jumptime);
+            }
+        });
+        //this.sound.play();
+
+
+
         // console.log(
         //     "jumptime:" + str(jumptime),
         //     "timestamp_start_parsing_time:" + str(this.timestamp_start_parsing_time / 1000),
         //     "timestamp_start_recording:" + str(this.timestamp_start_recording / 1000));
         // console.log("duration:", this.sound.duration());
-        if (jumptime >= 1.0) {
-            this.sound.jump(jumptime - 1.0)
-        } else {
-            //this.sound.jump(jumptime);
-        }
+
     }
     download() {
         this.sound.save(this.text + ".wav");
@@ -99,8 +109,10 @@ var flg_rec_started = false;
 
 
 function setup() {
+    se = loadSound('sounds/VSQSE_0017_kirarin_17.mp3');
+    se.setVolume(0.1);
     var userAgent = window.navigator.userAgent.toLowerCase();
-    if (userAgent.indexOf('chrome') != -1) {} else {
+    if (userAgent.indexOf('chrome') != -1) { } else {
         window.confirm("ブラウザをChromeで開き直してください。このページはChromeのみで動作します。This page works only on Chrome browser.");
     }
     // graphics stuff:
