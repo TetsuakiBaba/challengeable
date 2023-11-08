@@ -2,128 +2,143 @@
 
 <head>
     <meta http-equiv="content-type" charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
-    <!-- <script src="https://kit.fontawesome.com/f3696ade89.js" crossorigin="anonymous"></script> -->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="./js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
     <link rel="shortcut icon" href="./images/favicon.ico">
 
 </head>
 
 <body>
 
-
-
     <div class="container">
 
-        <h1 class="display-4 mt-4 pt-4">challengeable</h1>
-        <div id="text-holder"></div>
+        <h1 class="display-1 mt-4 pt-4">challengeable</h1>
 
-
-        <div class="input-group mb-1">
-            <div class="input-group-append">
-                <button type="button" id="toggle_start_pause" class="btn btn-primary" data-toggle="button"
-                    value="false">
-                    <i class="bi bi-play-circle"></i> Start
+        <div class="card mb-3">
+            <div class="card-header">
+                Settings
+                <!-- Button trigger modal -->
+                <button type="button" class="ms-2 btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    <i class="bi bi-file-text"></i>
                 </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">説明</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                challengeableは、話者が噛んだ場合に聴衆がチャレンジできるシステムです。話者はマイクボタンを押した後、話を開始します。文節や文章の区切りに応じて適時音声ファイルとセットになったテキストが生成されます。チャレンジを受けた場合、該当する箇所をテキスト内容から把握し、噛んだところを再確認できます。
+                                <ul>設定項目について
+                                    <li><strong>History size</strong>: 記録する文章数を指定します。大きい値ほどたくさんの文章を一時的に記録できます。</li>
+                                    <li><strong>Language</strong>: 話す言語を選択します</li>
+                                    <li><strong>Audio Device</strong>:
+                                        OSで選択されているデバイスが表示されます。このデバイスを変更したい場合はOS上からマイク入力のデバイスを変更してください。</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="input-group-append">
-                <span class="input-group-text" id="label">quiet</span>
-            </div>
 
-            <input type="text" class="form-control" placeholder="Press Start button then speak something"
-                aria-describedby="basic-addon2" id="text" />
+            <div class="card-body">
 
+                <div class="row gy-2 gx-2 align-items-center mb-2">
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <div class="input-group-text" id="label_history_size">History size</div>
+                            <select class="custom-select form-control" id="history_size" style="width:100px">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <span class="input-group-text" id="Language">Language</span>
+                            <select class="custom-select form-control" id="select_language">
+                                <option value='ja' selected>ja</option>
+                                <option value='zh-CN'>zh-CN</option>
+                                <option value='zh-TW'>zh-TW</option>
+                                <option value='ko'>ko</option>
+                                <option value='id'>id</option>
+                                <option value='th'>th</option>
+                                <option value='ms'>ms</option>
+                                <option value='mn'>mn</option>
+                                <option value='en'>en</option>
+                                <option value='fr'>fr</option>
+                                <option value='de'>de</option>
+                                <option value='it'>it</option>
+                                <option value='pl'>pl</option>
+                                <option value='pt'>pt</option>
+                                <option value='es'>es</option>
+                                <option value='ru'>ru</option>
+                                <option value='vi'>vi</option>
 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <span class="input-group-text" id="audio_device_label" data-toggle="tooltip"
+                                data-placement="top" title="Only works on system default audio device">Audio
+                                Device</span>
 
-        </div>
-
-        <div class="input-group mb-3 input-group-sm">
-            <div class="input-group-append">
-                <span class="input-group-text" id="label_history_size">History size</span>
-            </div>
-            <select class="custom-select" id="history_size" style="width:100px">
-                <option value="10" selected>10</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <div class="input-group-append">
-                <span class="input-group-text" id="Language">Language</span>
-            </div>
-            <select class="custom-select" id="select_language">
-                <option value='ja' selected>ja</option>
-                <option value='zh-CN'>zh-CN</option>
-                <option value='zh-TW'>zh-TW</option>
-                <option value='ko'>ko</option>
-                <option value='id'>id</option>
-                <option value='th'>th</option>
-                <option value='ms'>ms</option>
-                <option value='mn'>mn</option>
-                <option value='en'>en</option>
-                <option value='fr'>fr</option>
-                <option value='de'>de</option>
-                <option value='it'>it</option>
-                <option value='pl'>pl</option>
-                <option value='pt'>pt</option>
-                <option value='es'>es</option>
-                <option value='ru'>ru</option>
-                <option value='vi'>vi</option>
-
-            </select>
-            <div class="input-group-append">
-                <span class="input-group-text" id="audio_device_label" data-toggle="tooltip" data-placement="top"
-                    title="Only works on system default audio device">Audio Device</span>
-            </div>
-            <select class="custom-select" id="audio_devices">
-            </select>
-        </div>
-
-
-
-
-
-        <!--
-        <div class="form-group row">
-            <div class="col-sm-8"></div>
-            <div class="col-sm-1">
-                <i class="fas fa-microphone"></i>
-            </div>
-            <div class="col-sm-3">
-                <div class="progress" style="height:15px">
-                    <div id="volume" class="progress-bar progress-bar-striped bg-danger" role="progressbar"
-                        style="width:10%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <select class="custom-select form-control" id="audio_devices" disabled>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-12">
+                <div class="card position-relative">
+                    <div class="card-body" style="height:6em;" id="text">
+                        マイクボタンを押して話し始めてください
+                    </div>
 
+                    <button type="button" id="toggle_start_pause"
+                        class="btn btn-success button-round position-absolute bottom-0 end-0" data-toggle="button"
+                        value="false">
+                        <i class="bi bi-mic-mute-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-        <div id="sketch-holder"></div>
--->
-        <hr class="my-4">
-        <footer class="page-footer font-small">
-            <div class="footer-copyright text-center py-3">
-                <a href="https://github.com/TetsuakiBaba/challengeable">Challengeable on github</a> by
-                <a href="https://tetsuakibaba.jp">Tetsuaki Baba</a>
+        <div id="text-holder"></div>
+
+        <hr>
+        <footer class="page-footer small text-muted">
+            <div class="footer-copyright text-center">
+                &copy;2023
+                <a class="link-secondary link-underline link-underline-opacity-0"
+                    href="https://tetsuakibaba.jp">Tetsuaki Baba</a>
+                <a class="link-secondary link-underline link-underline-opacity-0"
+                    href="https://github.com/TetsuakiBaba/challengeable"><i class="bi bi-github"></i></a>
             </div>
         </footer>
     </div>
-    <script src="p5.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <script src="VideoAudioDeviceSelect.js"></script>
-    <script src="p5.speech.js"></script>
-    <script src="sketch.js"></script>
+    <script src="./js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="./js/p5.js"></script>
+    <script src="./js/p5.sound.min.js"></script>
+    <script src="./js/VideoAudioDeviceSelect.js"></script>
+    <script src="./js/p5.speech.js"></script>
+    <script src="./js/sketch.js"></script>
     <!--<script src="/socket.io/socket.io.js"></script>-->
 
 

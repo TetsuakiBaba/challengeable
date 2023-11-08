@@ -8,9 +8,7 @@ https://developers.google.com/apps-script/reference/language/language-app
 var vtlog = [];
 var myRec = new p5.SpeechRec('', parseResult); // new P5.SpeechRec object
 var se;
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
+
 
 class VoiceTextLog {
     constructor() {
@@ -29,26 +27,18 @@ class VoiceTextLog {
         this.text = _text;
         this.element = createDiv(_text);
 
-        this.element_button_play = createSpan('<i class="bi bi-play-circle"></i> ');
+        this.element_button_play = createSpan('<i class="ms-2 bi bi-play-circle"></i> ');
         this.element_button_play.parent(this.element);
         this.element_button_play.class("pointer");
         this.element_button_play.mouseClicked(this.play.bind(this));
-        this.element_button_download = createSpan(' <i class="bi bi-download"></i> ');
+        this.element_button_download = createSpan('<i class="ms-2 bi bi-download"></i> ');
         this.element_button_download.parent(this.element);
         this.element_button_download.class("pointer");
         this.element_button_download.mouseClicked(this.download.bind(this));
 
-
-        //this.element.mouseClicked(this.play.bind(this));
-        //this.element.mouseOver(this.showButtons.bind(this));
-
         this.element.class("vtlog");
-        //this.element_button.class("vtlog");
-        this.element.parent('text-holder');
-        //this.element_button_play.hide();
-        //this.element_button_download.hide();
-        //this.element.mouseOver(this.showButtons.bind(this));
-        //this.element.mouseOut(this.hideButtons.bind(this));
+        let firstChild = document.querySelector('#text-holder').firstChild;
+        document.querySelector('#text-holder').insertBefore(this.element.elt, firstChild);
     }
     removeP() {
         this.element_button_play.remove();
@@ -153,8 +143,8 @@ function changedLanguage() {
 }
 
 function pauseRecognition() {
-    document.getElementById("toggle_start_pause").innerHTML = `<i class="bi bi-play-circle"></i> Start`;
-    document.getElementById("toggle_start_pause").className = "btn btn-primary";
+    document.getElementById("toggle_start_pause").innerHTML = `<i class="bi bi-mic-mute-fill"></i>`;
+    document.getElementById("toggle_start_pause").className = "btn btn-success button-round position-absolute bottom-0 end-0";
     document.getElementById("text").placeholder = "Press Start button then speak something.";
     flg_rec_started = false;
     myRec.stop();
@@ -164,8 +154,8 @@ function startRecognition() {
     for (let i = 0; i < vtlog.length; i++) {
         vtlog[i].sound.stop();
     }
-    document.getElementById("toggle_start_pause").innerHTML = `<i class="bi bi-pause-circle"></i> Pause`;
-    document.getElementById("toggle_start_pause").className = "btn btn-danger";
+    document.getElementById("toggle_start_pause").innerHTML = `<i class="bi bi-mic-fill"></i>`;
+    document.getElementById("toggle_start_pause").className = "btn btn-danger button-round position-absolute bottom-0 end-0";
     document.getElementById("text").placeholder = "Speak something, or Press Pause button to stop recognition.";
     flg_rec_started = true;
 
@@ -202,8 +192,7 @@ function parseResult() {
         }
         flg_first_parseResult = false;
     }
-    document.getElementById("label").innerHTML = "speaking...";
-    document.getElementById("text").value = myRec.resultString;
+    document.getElementById("text").innerText = myRec.resultString;
 }
 
 
@@ -233,10 +222,9 @@ function endSpeech() {
         return;
     }
     // 音声入力結果があった場合
-    let str_result = document.getElementById("text").value;
+    let str_result = document.getElementById("text").innerText;
     if (str_result.length > 0) {
         //console.log("End");
-        document.getElementById("label").innerHTML = "quiet";
 
 
         recorder.stop();
@@ -272,17 +260,17 @@ function endSpeech() {
         }
         socket.emit('translate', data);
         */
-        document.getElementById("text").value = "";
+        document.getElementById("text").innerText = "";
         myRec.resultString = '';
 
-        var element = document.documentElement;
-        var bottom = element.scrollHeight - element.clientHeight;
-        //console.log(bottom, element.scrollHeight);
-        window.scroll({
-            left: 0,
-            top: element.scrollHeight,
-            behavior: "smooth"
-        });
+        // var element = document.documentElement;
+        // var bottom = element.scrollHeight - element.clientHeight;
+        // //console.log(bottom, element.scrollHeight);
+        // window.scroll({
+        //     left: 0,
+        //     top: element.scrollHeight,
+        //     behavior: "smooth"
+        // });
     } else {
         //console.log("using");
         userStartAudio();

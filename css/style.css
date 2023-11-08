@@ -1,0 +1,57 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, "游ゴシック体", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, 'Open Sans', sans-serif;
+}
+
+@keyframes fadeInAnime {
+  from {
+    opacity: 0;
+    transform: translateY(-6em);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.vtlog {
+  position: relative;
+  display: inline-block;
+  margin: 0.3em;
+  padding: 7px 10px;
+  /* min-width: 120px; */
+  max-width: 100%;
+  color: #555;
+  font-size: 16px;
+  line-height: 1.5em;
+  background: #e0edff;
+  border-radius: 15px;
+  animation-name: fadeInAnime;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.button-round {
+  border-radius: 50%;
+  /* 円形にする */
+  width: 3rem;
+  /* 幅を設定 */
+  height: 3rem;
+  /* 高さを設定 */
+  font-size: 1rem;
+  /* テキストのサイズを大きくする */
+  /* line-height: 100px; */
+  /* テキストのラインハイトをボタンの高さに合わせる */
+  text-align: center;
+  padding: 0;
+  /* デフォルトのパディングを取り除く */
+}
+
+
+
+
+.pointer:hover {
+  cursor: pointer;
+}
