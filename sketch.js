@@ -29,11 +29,11 @@ class VoiceTextLog {
         this.text = _text;
         this.element = createDiv(_text);
 
-        this.element_button_play = createSpan(' <i class="far fa-play-circle fa-lg"></i> ');
+        this.element_button_play = createSpan('<i class="bi bi-play-circle"></i> ');
         this.element_button_play.parent(this.element);
         this.element_button_play.class("pointer");
         this.element_button_play.mouseClicked(this.play.bind(this));
-        this.element_button_download = createSpan(' <i class="far fa-arrow-alt-circle-down fa-lg"></i> ');
+        this.element_button_download = createSpan(' <i class="bi bi-download"></i> ');
         this.element_button_download.parent(this.element);
         this.element_button_download.class("pointer");
         this.element_button_download.mouseClicked(this.download.bind(this));
@@ -153,7 +153,7 @@ function changedLanguage() {
 }
 
 function pauseRecognition() {
-    document.getElementById("toggle_start_pause").innerHTML = "<i class=\"far fa-comment-alt\"></i> Start";
+    document.getElementById("toggle_start_pause").innerHTML = `<i class="bi bi-play-circle"></i> Start`;
     document.getElementById("toggle_start_pause").className = "btn btn-primary";
     document.getElementById("text").placeholder = "Press Start button then speak something.";
     flg_rec_started = false;
@@ -164,7 +164,7 @@ function startRecognition() {
     for (let i = 0; i < vtlog.length; i++) {
         vtlog[i].sound.stop();
     }
-    document.getElementById("toggle_start_pause").innerHTML = "<i class=\"far fa-pause-circle\"></i> Pause";
+    document.getElementById("toggle_start_pause").innerHTML = `<i class="bi bi-pause-circle"></i> Pause`;
     document.getElementById("toggle_start_pause").className = "btn btn-danger";
     document.getElementById("text").placeholder = "Speak something, or Press Pause button to stop recognition.";
     flg_rec_started = true;
